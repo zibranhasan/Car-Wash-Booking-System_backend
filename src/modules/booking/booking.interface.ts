@@ -8,7 +8,7 @@ export interface IBooking {
   vehicleType: string;
   vehicleBrand: string;
   vehicleModel: string;
-  manufacturingYear: number;
+  manufacturingYear: string;
   registrationPlate: string;
   createdAt?: Date;
   updatedAt?: Date;

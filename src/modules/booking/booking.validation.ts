@@ -8,6 +8,6 @@ export const createBookingSchema = z.object({
   vehicleType: z.string().nonempty(),
   vehicleBrand: z.string().nonempty(),
   vehicleModel: z.string().nonempty(),
-  manufacturingYear: z.number().int().min(1886), // The year the first car was made
+  manufacturingYear: z.string(), // The year the first car was made
   registrationPlate: z.string().nonempty(),
 });

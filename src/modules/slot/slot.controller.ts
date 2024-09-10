@@ -8,8 +8,15 @@ import sendResponse from "../../app/utils/sendResponse";
 import {
   createServiceSlotSchema,
   getAvailableSlotsSchema,
+  updateServiceSlotSchema,
 } from "./slot.validation";
-import { createSlots, getAvailableSlots } from "./slot.service";
+import {
+  createSlots,
+  deleteServiceSlot,
+  getAllSlots,
+  getAvailableSlots,
+  updateServiceSlot,
+} from "./slot.service";
 
 export const createServiceSlotController = catchAsync(
   async (req: Request, res: Response) => {
@@ -32,6 +39,46 @@ export const getAvailableSlotsController = catchAsync(
       statusCode: httpStatus.OK,
       message: "Available slots retrieved successfully",
       data: slots,
+    });
+  }
+);
+// New: Get all slots
+export const getAllSlotsController = catchAsync(
+  async (req: Request, res: Response) => {
+    const slots = await getAllSlots();
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "All slots retrieved successfully",
+      data: slots,
+    });
+  }
+);
+
+// // New: Update slot
+export const updateServiceSlotController = catchAsync(
+  async (req: Request, res: Response) => {
+    const validatedBody = updateServiceSlotSchema.parse(req.body);
+    const updatedSlot = await updateServiceSlot(req.params.id, validatedBody);
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Slot updated successfully",
+      data: updatedSlot,
+    });
+  }
+);
+
+// New: Delete slot
+export const deleteServiceSlotController = catchAsync(
+  async (req: Request, res: Response) => {
+    const { id } = req.params;
+    await deleteServiceSlot(id);
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.NO_CONTENT,
+      message: "Slot deleted successfully",
+      data: [],
     });
   }
 );

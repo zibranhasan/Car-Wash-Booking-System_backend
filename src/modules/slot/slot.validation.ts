@@ -13,3 +13,11 @@ export const getAvailableSlotsSchema = z.object({
   date: z.string().optional(),
   serviceId: z.string().optional(),
 });
+// New: Update slot validation
+export const updateServiceSlotSchema = z.object({
+  service: z.string().optional(),
+  date: z.string().optional(),
+  startTime: z.string().optional(),
+  endTime: z.string().optional(),
+  isBooked: z.enum(["available", "booked", "canceled"]).optional(),
+});

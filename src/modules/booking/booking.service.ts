@@ -1,15 +1,8 @@
 // src/services/Booking.service.ts
 
-import { ServiceSlot } from "../slot/slot.model";
-
 import { Booking } from "./booking.model";
 
 export const createBooking = async (bookingData: any) => {
-  // Mark the slot as booked
-  await ServiceSlot.findByIdAndUpdate(bookingData.slot, {
-    isBooked: "booked",
-  });
-
   // Create a new booking
   const booking = new Booking(bookingData);
   await booking.save();
@@ -41,4 +34,7 @@ export const getUserBookings = async (userId: string) => {
   return await Booking.find({ customer: userId })
     .populate("service slot")
     .exec();
+};
+export const deleteBooking = async (bookingId: string) => {
+  await Booking.findByIdAndDelete(bookingId); // Delete the booking by ID
 };

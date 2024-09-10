@@ -48,3 +48,45 @@ export const getAvailableSlots = async (date?: string, serviceId?: string) => {
 
   return availableSlots;
 };
+// New: Get all slots
+export const getAllSlots = async () => {
+  return ServiceSlot.find().populate("service").exec(); // Populate service details
+};
+
+// New: Update slot
+export const updateServiceSlot = async (
+  id: string,
+  updatedData: Partial<IServiceSlot>
+) => {
+  const slot = await ServiceSlot.findById(id);
+
+  if (!slot) {
+    throw new Error("Slot not found");
+  }
+
+  // Prevent changing status if slot is already booked
+  if (slot.isBooked === "booked") {
+    throw new Error("Cannot update a booked slot");
+  }
+
+  // Allow only toggling between 'available' and 'canceled'
+  if (
+    updatedData.isBooked &&
+    !["available", "canceled"].includes(updatedData.isBooked)
+  ) {
+    throw new Error("Only available or canceled status is allowed");
+  }
+
+  const updatedSlot = await ServiceSlot.findByIdAndUpdate(id, updatedData, {
+    new: true,
+  }).exec();
+  return updatedSlot;
+};
+// New: Delete slot
+export const deleteServiceSlot = async (id: string) => {
+  const result = await ServiceSlot.findByIdAndDelete(id).exec();
+
+  if (!result) {
+    throw new Error("Slot not found");
+  }
+};

@@ -7,6 +7,7 @@ import catchAsync from "../../app/utils/catchAsync";
 import { createBookingSchema } from "./booking.validation";
 import {
   createBooking,
+  deleteBooking,
   getAllBookings,
   getUserBookings,
 } from "./booking.service";
@@ -58,6 +59,20 @@ export const getUserBookingsController = catchAsync(
       statusCode: httpStatus.OK,
       message: "User bookings retrieved successfully",
       data: bookings,
+    });
+  }
+);
+
+export const deleteBookingController = catchAsync(
+  async (req: Request, res: Response) => {
+    const bookingId = req.params.id;
+    await deleteBooking(bookingId);
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Booking deleted successfully",
+      data: [],
     });
   }
 );
