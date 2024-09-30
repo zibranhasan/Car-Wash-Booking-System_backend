@@ -17,6 +17,28 @@ const http_status_1 = __importDefault(require("http-status"));
 const catchAsync_1 = __importDefault(require("../../app/utils/catchAsync"));
 const user_service_1 = require("./user.service");
 const sendResponse_1 = __importDefault(require("../../app/utils/sendResponse"));
+// Get all users
+const getAllUsers = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const users = yield user_service_1.userService.getAllUsers();
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: "All users retrieved successfully",
+        data: users,
+    });
+}));
+// Update user role
+const updateUserRole = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { userId } = req.params;
+    const { role } = req.body;
+    const updatedUser = yield user_service_1.userService.updateUserRole(userId, role);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: "User role updated successfully",
+        data: updatedUser,
+    });
+}));
 const createUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const userData = req.body;
     const result = yield user_service_1.userService.signUp(userData);
@@ -40,7 +62,34 @@ const loginController = (0, catchAsync_1.default)((req, res) => __awaiter(void 0
         data: result.userObject,
     });
 }));
+const getProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const userId = req.user.id;
+        const userProfile = yield user_service_1.userService.getProfile(userId);
+        return res.status(200).json({ user: userProfile });
+    }
+    catch (error) {
+        const err = error; // Cast to Error type
+        return res.status(404).json({ error: err.message });
+    }
+});
+// Update Profile
+const updateProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const userId = req.user.id;
+        const updatedUser = yield user_service_1.userService.updateProfile(userId, req.body);
+        return res.status(200).json({ user: updatedUser });
+    }
+    catch (error) {
+        const err = error; // Cast to Error type
+        return res.status(404).json({ error: err.message });
+    }
+});
 exports.userController = {
     createUser,
     loginController,
+    getProfile,
+    updateProfile,
+    getAllUsers,
+    updateUserRole,
 };

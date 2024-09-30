@@ -10,14 +10,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUserBookings = exports.getAllBookings = exports.createBooking = void 0;
-const slot_model_1 = require("../slot/slot.model");
+exports.deleteBooking = exports.getUserBookings = exports.getAllBookings = exports.createBooking = void 0;
 const booking_model_1 = require("./booking.model");
 const createBooking = (bookingData) => __awaiter(void 0, void 0, void 0, function* () {
-    // Mark the slot as booked
-    yield slot_model_1.ServiceSlot.findByIdAndUpdate(bookingData.slot, {
-        isBooked: "booked",
-    });
     // Create a new booking
     const booking = new booking_model_1.Booking(bookingData);
     yield booking.save();
@@ -49,3 +44,7 @@ const getUserBookings = (userId) => __awaiter(void 0, void 0, void 0, function* 
         .exec();
 });
 exports.getUserBookings = getUserBookings;
+const deleteBooking = (bookingId) => __awaiter(void 0, void 0, void 0, function* () {
+    yield booking_model_1.Booking.findByIdAndDelete(bookingId); // Delete the booking by ID
+});
+exports.deleteBooking = deleteBooking;

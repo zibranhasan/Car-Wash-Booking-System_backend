@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAvailableSlots = exports.createSlots = void 0;
+exports.deleteServiceSlot = exports.updateServiceSlot = exports.getAllSlots = exports.getAvailableSlots = exports.createSlots = void 0;
 const slot_model_1 = require("./slot.model");
 const createSlots = (slotData) => __awaiter(void 0, void 0, void 0, function* () {
     const { date, startTime, endTime, service } = slotData;
@@ -50,3 +50,37 @@ const getAvailableSlots = (date, serviceId) => __awaiter(void 0, void 0, void 0,
     return availableSlots;
 });
 exports.getAvailableSlots = getAvailableSlots;
+// New: Get all slots
+const getAllSlots = () => __awaiter(void 0, void 0, void 0, function* () {
+    return slot_model_1.ServiceSlot.find().populate("service").exec(); // Populate service details
+});
+exports.getAllSlots = getAllSlots;
+// New: Update slot
+const updateServiceSlot = (id, updatedData) => __awaiter(void 0, void 0, void 0, function* () {
+    const slot = yield slot_model_1.ServiceSlot.findById(id);
+    if (!slot) {
+        throw new Error("Slot not found");
+    }
+    // Prevent changing status if slot is already booked
+    if (slot.isBooked === "booked") {
+        throw new Error("Cannot update a booked slot");
+    }
+    // Allow only toggling between 'available' and 'canceled'
+    if (updatedData.isBooked &&
+        !["available", "canceled"].includes(updatedData.isBooked)) {
+        throw new Error("Only available or canceled status is allowed");
+    }
+    const updatedSlot = yield slot_model_1.ServiceSlot.findByIdAndUpdate(id, updatedData, {
+        new: true,
+    }).exec();
+    return updatedSlot;
+});
+exports.updateServiceSlot = updateServiceSlot;
+// New: Delete slot
+const deleteServiceSlot = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield slot_model_1.ServiceSlot.findByIdAndDelete(id).exec();
+    if (!result) {
+        throw new Error("Slot not found");
+    }
+});
+exports.deleteServiceSlot = deleteServiceSlot;

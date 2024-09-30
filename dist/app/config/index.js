@@ -14,4 +14,6 @@ exports.default = {
     jwt_access_expires_in: process.env.JWT_ACCESS_EXPIRES_IN,
     // bcrypt_salt_rounds: process.env.BCRYPT_SALT_ROUNDS,
     // default_password: process.env.DEFAULT_PASS,
+    STORE_ID: process.env.STORE_ID,
+    STORE_PASS: process.env.STORE_PASS,
 };

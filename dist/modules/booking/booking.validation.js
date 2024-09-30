@@ -9,6 +9,6 @@ exports.createBookingSchema = zod_1.z.object({
     vehicleType: zod_1.z.string().nonempty(),
     vehicleBrand: zod_1.z.string().nonempty(),
     vehicleModel: zod_1.z.string().nonempty(),
-    manufacturingYear: zod_1.z.number().int().min(1886), // The year the first car was made
+    manufacturingYear: zod_1.z.string(), // The year the first car was made
     registrationPlate: zod_1.z.string().nonempty(),
 });

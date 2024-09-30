@@ -33,6 +33,8 @@ const auth_1 = __importStar(require("../../app/middlewares/auth"));
 const booking_controller_1 = require("./booking.controller");
 const router = express_1.default.Router();
 router.post("/bookings", (0, auth_1.default)(auth_1.USER_ROLE.user), booking_controller_1.createBookingController);
-router.get("/bookings", (0, auth_1.default)(auth_1.USER_ROLE.admin), booking_controller_1.getAllBookingsController);
+// router.post("/bookings", createBookingController);
+router.get("/bookings", (0, auth_1.default)(auth_1.USER_ROLE.admin, auth_1.USER_ROLE.user), booking_controller_1.getAllBookingsController);
 router.get("/my-bookings", (0, auth_1.default)(auth_1.USER_ROLE.user), booking_controller_1.getUserBookingsController);
+router.delete("/bookings/:id", (0, auth_1.default)(auth_1.USER_ROLE.user), booking_controller_1.deleteBookingController); // Add the delete route
 exports.BookingRoutes = router;

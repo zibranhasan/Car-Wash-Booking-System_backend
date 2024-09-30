@@ -33,7 +33,7 @@ const bookingSchema = new mongoose_1.Schema({
     vehicleType: { type: String, required: true },
     vehicleBrand: { type: String, required: true },
     vehicleModel: { type: String, required: true },
-    manufacturingYear: { type: Number, required: true },
+    manufacturingYear: { type: String, required: true },
     registrationPlate: { type: String, required: true },
 }, {
     timestamps: true, // Adds createdAt and updatedAt fields

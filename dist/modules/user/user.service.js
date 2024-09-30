@@ -28,6 +28,19 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const user_model_1 = __importDefault(require("./user.model"));
 const config_1 = __importDefault(require("../../app/config"));
+// Get all users (admin only)
+const getAllUsers = () => __awaiter(void 0, void 0, void 0, function* () {
+    const users = yield user_model_1.default.find().select("-password");
+    return users.map((user) => user.toObject({ versionKey: false }));
+});
+// Update user role
+const updateUserRole = (userId, newRole) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield user_model_1.default.findByIdAndUpdate(userId, { role: newRole }, { new: true, runValidators: true }).select("-password");
+    if (!user) {
+        throw new Error("User not found or role update failed");
+    }
+    return user.toObject({ versionKey: false });
+});
 const signUp = (userData) => __awaiter(void 0, void 0, void 0, function* () {
     const existingUser = yield user_model_1.default.findOne({ email: userData.email });
     if (existingUser) {
@@ -56,7 +69,7 @@ const login = (loginData) => __awaiter(void 0, void 0, void 0, function* () {
         throw new Error("Invalid credentials");
     }
     // Generate JWT token
-    const token = jsonwebtoken_1.default.sign({ id: user._id, name: user.name, email: user.email, role: user.role }, config_1.default.jwt_access_secret, { expiresIn: "1h" });
+    const token = jsonwebtoken_1.default.sign({ id: user._id, name: user.name, email: user.email, role: user.role }, config_1.default.jwt_access_secret, { expiresIn: "1d" });
     // Convert Mongoose document to a plain JavaScript object and remove password
     const _a = user.toObject({
         versionKey: false, // Exclude the __v field
@@ -66,7 +79,29 @@ const login = (loginData) => __awaiter(void 0, void 0, void 0, function* () {
         userObject,
     };
 });
+// Get user profile by ID
+const getProfile = (userId) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield user_model_1.default.findById(userId).select("-password");
+    if (!user) {
+        throw new Error("User not found");
+    }
+    return user.toObject({ versionKey: false });
+});
+const updateProfile = (userId, updatedData) => __awaiter(void 0, void 0, void 0, function* () {
+    const updatedUser = yield user_model_1.default.findByIdAndUpdate(userId, updatedData, {
+        new: true,
+        runValidators: true,
+    }).select("-password");
+    if (!updatedUser) {
+        throw new Error("User not found or update failed");
+    }
+    return updatedUser.toObject({ versionKey: false });
+});
 exports.userService = {
     signUp,
     login,
+    getProfile,
+    updateProfile,
+    getAllUsers,
+    updateUserRole,
 };

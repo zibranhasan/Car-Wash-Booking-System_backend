@@ -32,6 +32,10 @@ const express_1 = __importDefault(require("express"));
 const slot_controller_1 = require("./slot.controller");
 const auth_1 = __importStar(require("../../app/middlewares/auth"));
 const router = express_1.default.Router();
+// New routes for fetching all slots and updating a slot
+router.get("/servicess/slots", (0, auth_1.default)(auth_1.USER_ROLE.admin), slot_controller_1.getAllSlotsController); // Get all slots
 router.post("/services/slots", (0, auth_1.default)(auth_1.USER_ROLE.admin), slot_controller_1.createServiceSlotController);
 router.get("/slots/availability", slot_controller_1.getAvailableSlotsController);
+router.put("/services/slots/:id", (0, auth_1.default)(auth_1.USER_ROLE.admin), slot_controller_1.updateServiceSlotController); // Update a slot
+router.delete("/slots/:id", slot_controller_1.deleteServiceSlotController); // Delete slot
 exports.SlotRoutes = router;

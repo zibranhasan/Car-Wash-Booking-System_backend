@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUserBookingsController = exports.getAllBookingsController = exports.createBookingController = void 0;
+exports.deleteBookingController = exports.getUserBookingsController = exports.getAllBookingsController = exports.createBookingController = void 0;
 const http_status_1 = __importDefault(require("http-status"));
 const catchAsync_1 = __importDefault(require("../../app/utils/catchAsync"));
 const booking_validation_1 = require("./booking.validation");
@@ -57,5 +57,15 @@ exports.getUserBookingsController = (0, catchAsync_1.default)((req, res) => __aw
         statusCode: http_status_1.default.OK,
         message: "User bookings retrieved successfully",
         data: bookings,
+    });
+}));
+exports.deleteBookingController = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const bookingId = req.params.id;
+    yield (0, booking_service_1.deleteBooking)(bookingId);
+    (0, sendResponse_1.default)(res, {
+        success: true,
+        statusCode: http_status_1.default.OK,
+        message: "Booking deleted successfully",
+        data: [],
     });
 }));

@@ -1,6 +1,7 @@
 export interface ITransaction extends Document {
-  userName: string;
   email: string;
-  slotIds: string[]; // Array of slotIds
+  slotId: string;
   amount: number;
+  tran_id: string;
+  paidStatus: boolean;
 }

@@ -7,16 +7,11 @@ const transactionService = new TransactionService();
 export class TransactionController {
   static async createTransaction(req: Request, res: Response) {
     try {
-      const { email, slotIds,amount } = req.body;
-
-      // Validate that slotIds is an array
-      if (!Array.isArray(slotIds)) {
-        return res.status(400).json({ message: "slotIds must be an array" });
-      }
+      const { email, slotId, amount } = req.body;
 
       const transaction = await transactionService.addSlotsToTransaction(
         email,
-        slotIds,
+        slotId,
         amount
       );
       return res.status(201).json(transaction);
