@@ -2,7 +2,7 @@
 
 import { Transaction } from "./transaction.model";
 import config from "../../app/config";
-import app from "../../app";
+
 const SSLCommerzPayment = require("sslcommerz-lts");
 
 const store_id = config.STORE_ID;
@@ -10,17 +10,14 @@ const store_passwd = config.STORE_PASS;
 const is_live = false;
 
 export class TransactionService {
-  // Add slotIds to transaction and initiate the payment process
-  tran_id = `REF${Date.now()}${Math.floor(Math.random() * 1000)}`;
-
   async addSlotsToTransaction(email: string, slotId: string, amount: number) {
-    console.log("Received slotId: ", email, slotId, amount);
-
+    // Add slotIds to transaction and initiate the payment process
+    const tran_id = `REF${Date.now()}${Math.floor(Math.random() * 1000)}`;
     const data = {
       total_amount: amount,
       currency: "BDT",
-      tran_id: this.tran_id, // use unique tran_id for each api call
-      success_url: `https://car-washing-backend-coral.vercel.app/payment/success/${this.tran_id}`,
+      tran_id: tran_id, // use unique tran_id for each api call
+      success_url: `http://localhost:5000/api/payment/success/${tran_id}`,
       fail_url: "http://localhost:3030/fail",
       cancel_url: "http://localhost:3030/cancel",
       ipn_url: "http://localhost:3030/ipn",
@@ -63,7 +60,7 @@ export class TransactionService {
       email,
       slotId,
       amount,
-      tran_id: this.tran_id,
+      tran_id: tran_id,
       paidStatus: false,
     });
 
