@@ -2,6 +2,7 @@
 
 import { Transaction } from "./transaction.model";
 import config from "../../app/config";
+import { ServiceSlot } from "../slot/slot.model";
 
 const SSLCommerzPayment = require("sslcommerz-lts");
 
@@ -11,6 +12,17 @@ const is_live = false;
 
 export class TransactionService {
   async addSlotsToTransaction(email: string, slotId: string, amount: number) {
+    //adding extra layer for checking slot is already booked or not
+    const slot = await ServiceSlot.findById(slotId);
+    if (!slot) {
+      throw new Error("The specified slot does not exist.");
+    }
+
+    if (slot.isBooked === "booked") {
+      throw new Error(
+        "This slot is already booked. Please choose another slot."
+      );
+    }
     // Add slotIds to transaction and initiate the payment process
     const tran_id = `REF${Date.now()}${Math.floor(Math.random() * 1000)}`;
     const data = {

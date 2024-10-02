@@ -19,8 +19,6 @@ router.delete(
 router.post("/payment/success/:tranId", async (req, res) => {
   const { tranId } = req.params;
 
-  console.log("tranId", tranId);
-
   try {
     // Find the transaction by the transaction ID
     const transaction = await Transaction.findOne({ tran_id: tranId });

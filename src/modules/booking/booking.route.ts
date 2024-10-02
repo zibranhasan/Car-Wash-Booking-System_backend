@@ -18,7 +18,11 @@ router.get(
   auth(USER_ROLE.admin, USER_ROLE.user),
   getAllBookingsController
 );
-router.get("/my-bookings", auth(USER_ROLE.user), getUserBookingsController);
+router.get(
+  "/my-bookings",
+  auth(USER_ROLE.user, USER_ROLE.admin),
+  getUserBookingsController
+);
 
 router.delete("/bookings/:id", auth(USER_ROLE.user), deleteBookingController); // Add the delete route
 

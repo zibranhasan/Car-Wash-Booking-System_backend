@@ -11,7 +11,7 @@ class ReviewService {
 
   // Get all reviews
   public async getAllReviews(): Promise<IReview[]> {
-    return Review.find().populate("userId", "name email");
+    return Review.find().populate("userId", "name email photo");
   }
 }
 
