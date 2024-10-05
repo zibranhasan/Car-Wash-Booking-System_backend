@@ -9,6 +9,7 @@ const ServiceSchema = new Schema<IService>(
     photo: { type: String },
     price: { type: Number, required: true },
     duration: { type: Number, required: true },
+    reviews: { type: [Number], default: [] },
     isDeleted: { type: Boolean, default: false },
   },
   { timestamps: true }

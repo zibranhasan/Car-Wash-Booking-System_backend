@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteServiceController = exports.updateServiceController = exports.getAllServicesController = exports.getServiceController = exports.createServiceController = void 0;
+exports.addReviewController = exports.deleteServiceController = exports.updateServiceController = exports.getAllServicesController = exports.getServiceController = exports.createServiceController = void 0;
 const catchAsync_1 = __importDefault(require("../../app/utils/catchAsync"));
 const sendResponse_1 = __importDefault(require("../../app/utils/sendResponse"));
 const http_status_1 = __importDefault(require("http-status"));
@@ -87,5 +87,23 @@ exports.deleteServiceController = (0, catchAsync_1.default)((req, res) => __awai
         statusCode: http_status_1.default.OK,
         message: "Service deleted successfully",
         data: service,
+    });
+}));
+exports.addReviewController = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params; // Service ID
+    const { rating } = req.body; // The rating value
+    // Validate the rating (must be a number between 1 and 5)
+    if (typeof rating !== "number" || rating < 1 || rating > 5) {
+        return res.status(http_status_1.default.BAD_REQUEST).json({
+            success: false,
+            message: "Rating must be a number between 1 and 5",
+        });
+    }
+    const updatedService = yield (0, service_service_1.addReviewToService)(id, rating);
+    (0, sendResponse_1.default)(res, {
+        success: true,
+        statusCode: http_status_1.default.OK,
+        message: "Review added successfully",
+        data: updatedService,
     });
 }));

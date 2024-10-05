@@ -32,6 +32,7 @@ const express_1 = __importDefault(require("express"));
 const service_controller_1 = require("./service.controller");
 const auth_1 = __importStar(require("../../app/middlewares/auth"));
 const router = express_1.default.Router();
+router.post("/services/:id/review", service_controller_1.addReviewController);
 router.post("/services", (0, auth_1.default)(auth_1.USER_ROLE.admin), service_controller_1.createServiceController);
 router.get("/services/:id", service_controller_1.getServiceController);
 router.get("/services", service_controller_1.getAllServicesController);

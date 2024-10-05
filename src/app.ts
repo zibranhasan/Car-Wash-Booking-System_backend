@@ -18,6 +18,7 @@ app.use(bodyParser.json());
 app.use(cookieParser()); // Use cookie-parser middleware
 
 // Enable CORS for all routes
+//transaction route + transaction service
 app.use(
   cors({
     origin: "http://localhost:5173",

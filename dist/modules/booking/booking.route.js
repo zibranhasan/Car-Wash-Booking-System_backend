@@ -35,6 +35,6 @@ const router = express_1.default.Router();
 router.post("/bookings", (0, auth_1.default)(auth_1.USER_ROLE.user), booking_controller_1.createBookingController);
 // router.post("/bookings", createBookingController);
 router.get("/bookings", (0, auth_1.default)(auth_1.USER_ROLE.admin, auth_1.USER_ROLE.user), booking_controller_1.getAllBookingsController);
-router.get("/my-bookings", (0, auth_1.default)(auth_1.USER_ROLE.user), booking_controller_1.getUserBookingsController);
+router.get("/my-bookings", (0, auth_1.default)(auth_1.USER_ROLE.user, auth_1.USER_ROLE.admin), booking_controller_1.getUserBookingsController);
 router.delete("/bookings/:id", (0, auth_1.default)(auth_1.USER_ROLE.user), booking_controller_1.deleteBookingController); // Add the delete route
 exports.BookingRoutes = router;

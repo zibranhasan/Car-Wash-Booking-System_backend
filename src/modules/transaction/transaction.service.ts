@@ -87,7 +87,7 @@ export class TransactionService {
   }
 
   async getAllTransactions() {
-    return Transaction.find().populate("slotIds");
+    return Transaction.find().populate("slotId");
   }
 
   async deleteTransaction(transactionId: string) {

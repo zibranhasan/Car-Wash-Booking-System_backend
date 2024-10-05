@@ -28,8 +28,10 @@ const mongoose_1 = __importStar(require("mongoose"));
 const ServiceSchema = new mongoose_1.Schema({
     name: { type: String, required: true },
     description: { type: String, required: true },
+    photo: { type: String },
     price: { type: Number, required: true },
     duration: { type: Number, required: true },
+    reviews: { type: [Number], default: [] },
     isDeleted: { type: Boolean, default: false },
 }, { timestamps: true });
 const ServiceModel = mongoose_1.default.model("Service", ServiceSchema);

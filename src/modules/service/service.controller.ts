@@ -6,6 +6,7 @@ import sendResponse from "../../app/utils/sendResponse";
 import httpStatus from "http-status";
 import { createServiceSchema, updateServiceSchema } from "./service.validation";
 import {
+  addReviewToService,
   createService,
   deleteService,
   getAllServices,
@@ -101,6 +102,29 @@ export const deleteServiceController = catchAsync(
       statusCode: httpStatus.OK,
       message: "Service deleted successfully",
       data: service,
+    });
+  }
+);
+export const addReviewController = catchAsync(
+  async (req: Request, res: Response) => {
+    const { id } = req.params; // Service ID
+    const { rating } = req.body; // The rating value
+
+    // Validate the rating (must be a number between 1 and 5)
+    if (typeof rating !== "number" || rating < 1 || rating > 5) {
+      return res.status(httpStatus.BAD_REQUEST).json({
+        success: false,
+        message: "Rating must be a number between 1 and 5",
+      });
+    }
+
+    const updatedService = await addReviewToService(id, rating);
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Review added successfully",
+      data: updatedService,
     });
   }
 );

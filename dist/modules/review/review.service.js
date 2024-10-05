@@ -26,7 +26,7 @@ class ReviewService {
     // Get all reviews
     getAllReviews() {
         return __awaiter(this, void 0, void 0, function* () {
-            return review_model_1.default.find().populate("userId", "name email");
+            return review_model_1.default.find().populate("userId", "name email photo");
         });
     }
 }

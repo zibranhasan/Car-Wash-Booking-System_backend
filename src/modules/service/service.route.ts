@@ -1,6 +1,7 @@
 // src/routes/service.route.ts
 import express from "express";
 import {
+  addReviewController,
   createServiceController,
   deleteServiceController,
   getAllServicesController,
@@ -10,6 +11,7 @@ import {
 import auth, { USER_ROLE } from "../../app/middlewares/auth";
 
 const router = express.Router();
+router.post("/services/:id/review", addReviewController);
 
 router.post("/services", auth(USER_ROLE.admin), createServiceController);
 router.get("/services/:id", getServiceController);

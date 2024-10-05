@@ -36,3 +36,15 @@ export const deleteService = async (id: string) => {
   }
   return null;
 };
+export const addReviewToService = async (id: string, rating: number) => {
+  const service = await ServiceModel.findById(id);
+  if (!service) {
+    throw new Error("Service not found");
+  }
+
+  // Add the review rating to the array
+  service?.reviews?.push(rating);
+  await service.save();
+
+  return service.toObject({ versionKey: false });
+};

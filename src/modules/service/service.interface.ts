@@ -5,6 +5,7 @@ export interface IService {
   photo?: string;
   price: number;
   duration: number;
+  reviews?: number[];
   isDeleted?: boolean;
   createdAt?: Date; // Optional
   updatedAt?: Date; // Optional

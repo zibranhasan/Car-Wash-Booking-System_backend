@@ -16,23 +16,29 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.TransactionService = void 0;
 const transaction_model_1 = require("./transaction.model");
 const config_1 = __importDefault(require("../../app/config"));
+const slot_model_1 = require("../slot/slot.model");
 const SSLCommerzPayment = require("sslcommerz-lts");
 const store_id = config_1.default.STORE_ID;
 const store_passwd = config_1.default.STORE_PASS;
 const is_live = false;
 class TransactionService {
-    constructor() {
-        // Add slotIds to transaction and initiate the payment process
-        this.tran_id = `REF${Date.now()}${Math.floor(Math.random() * 1000)}`;
-    }
     addSlotsToTransaction(email, slotId, amount) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log("Received slotId: ", email, slotId, amount);
+            //adding extra layer for checking slot is already booked or not
+            const slot = yield slot_model_1.ServiceSlot.findById(slotId);
+            if (!slot) {
+                throw new Error("The specified slot does not exist.");
+            }
+            if (slot.isBooked === "booked") {
+                throw new Error("This slot is already booked. Please choose another slot.");
+            }
+            // Add slotIds to transaction and initiate the payment process
+            const tran_id = `REF${Date.now()}${Math.floor(Math.random() * 1000)}`;
             const data = {
                 total_amount: amount,
                 currency: "BDT",
-                tran_id: this.tran_id, // use unique tran_id for each api call
-                success_url: `https://car-washing-backend-coral.vercel.app/payment/success/${this.tran_id}`,
+                tran_id: tran_id, // use unique tran_id for each api call
+                success_url: `https://car-washing-backend-coral.vercel.app/api/payment/success/${tran_id}`,
                 fail_url: "http://localhost:3030/fail",
                 cancel_url: "http://localhost:3030/cancel",
                 ipn_url: "http://localhost:3030/ipn",
@@ -71,7 +77,7 @@ class TransactionService {
                 email,
                 slotId,
                 amount,
-                tran_id: this.tran_id,
+                tran_id: tran_id,
                 paidStatus: false,
             });
             yield transaction.save(); // Ensure the transaction is saved to the DB
@@ -86,7 +92,7 @@ class TransactionService {
     }
     getAllTransactions() {
         return __awaiter(this, void 0, void 0, function* () {
-            return transaction_model_1.Transaction.find().populate("slotIds");
+            return transaction_model_1.Transaction.find().populate("slotId");
         });
     }
     deleteTransaction(transactionId) {
