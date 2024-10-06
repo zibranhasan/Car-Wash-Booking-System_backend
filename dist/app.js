@@ -19,6 +19,7 @@ app.use(express_1.default.json());
 app.use(body_parser_1.default.json());
 app.use((0, cookie_parser_1.default)()); // Use cookie-parser middleware
 // Enable CORS for all routes
+//transaction route + transaction service
 app.use((0, cors_1.default)({
     origin: "https://car-wash-booking-system-livid.vercel.app",
     credentials: true,
