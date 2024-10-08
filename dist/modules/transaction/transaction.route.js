@@ -59,7 +59,9 @@ router.post("/payment/success/:tranId", (req, res) => __awaiter(void 0, void 0, 
             yield session.commitTransaction();
             session.endSession();
             // Redirect to the success page
-            return res.redirect("https://car-wash-booking-system-livid.vercel.app/payment/success");
+            return res.redirect("https://car-wash-booking-system-livid.vercel.app/payment/success"
+            // "http://localhost:5173/payment/success"
+            );
         }
         catch (error) {
             // Abort the transaction on error

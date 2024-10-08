@@ -21,7 +21,8 @@ app.use(cookieParser()); // Use cookie-parser middleware
 //transaction route + transaction service
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://car-wash-booking-system-livid.vercel.app",
+    // origin: "http://localhost:5173",
     credentials: true,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     allowedHeaders: ["Content-Type", "Authorization"],
